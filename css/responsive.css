@@ -1,0 +1,302 @@
+/*
+ * responsive.css — TechScribe Responsive Overrides
+ * ═══════════════════════════════════════════════════════════════
+ * Mobile-first approach:
+ *   - style.css defines the BASE (works on all sizes)
+ *   - This file ADDS overrides at specific breakpoints
+ *
+ * Breakpoints:
+ *   Tablet  → max-width: 768px
+ *   Mobile  → max-width: 480px
+ *
+ * We only override what genuinely needs to change at each size.
+ * ═══════════════════════════════════════════════════════════════
+ */
+
+/* ─────────────────────────────────────────────────────────────
+   TABLET — ≤ 768px
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* ── Typography: scale down headings ── */
+  h1 { font-size: var(--text-4xl); }
+  h2 { font-size: var(--text-2xl); }
+
+  /* ── Navbar: show hamburger, collapse nav links ── */
+  .hamburger {
+    display: flex; /* Reveal the hamburger button */
+  }
+
+  /* Nav links collapse into a vertical dropdown panel */
+  .nav-links {
+    position: fixed;
+    top: var(--navbar-height);
+    left: 0;
+    right: 0;
+    background: var(--clr-bg-secondary);
+    border-bottom: 1px solid var(--clr-border);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--space-4);
+
+    /* Hidden by default — JS toggles .nav-open */
+    transform: translateY(-110%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--transition-base), opacity var(--transition-base);
+    z-index: 99;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* When JS adds .nav-open class to the list */
+  .nav-links.nav-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .nav-link {
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    font-size: var(--text-base);
+    border-bottom: 1px solid var(--clr-border);
+  }
+  .nav-links li:last-child .nav-link {
+    border-bottom: none;
+  }
+
+  /* ── Hero: stack vertically, tighten spacing ── */
+  .hero {
+    min-height: auto;
+  }
+  .hero-content {
+    padding-block: var(--space-16);
+    max-width: 100%;
+  }
+  .hero-title {
+    font-size: clamp(var(--text-3xl), 7vw, var(--text-4xl));
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hero-stats {
+    gap: var(--space-5);
+  }
+  .hero-blob {
+    /* Scale down blob on tablet */
+    width: 350px;
+    height: 350px;
+    right: -20%;
+    opacity: 0.6;
+  }
+
+  /* ── Blog Grid: 2 columns or fewer ── */
+  .posts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: var(--space-5);
+  }
+
+  /* ── Newsletter: stack to vertical ── */
+  .newsletter-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .newsletter-form {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* ── Footer: stack to column ── */
+  .footer-inner {
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+  .footer-brand {
+    max-width: 100%;
+  }
+  .footer-links {
+    flex-direction: row;
+    gap: var(--space-5);
+  }
+
+  /* ── Post page ── */
+  .post-article {
+    padding: var(--space-6);
+  }
+  .post-hero {
+    min-height: 240px;
+  }
+  .post-hero-title {
+    font-size: var(--text-2xl);
+  }
+
+  /* ── About page ── */
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+  .team-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  /* ── Container: tighter padding ── */
+  :root {
+    --container-pad: var(--space-4);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   MOBILE — ≤ 480px
+   ───────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+
+  /* ── Even tighter container ── */
+  :root {
+    --container-pad: var(--space-4);
+  }
+
+  /* ── Typography: reduce sizes further ── */
+  h1 { font-size: var(--text-3xl); }
+  h2 { font-size: var(--text-2xl); }
+  h3 { font-size: var(--text-lg); }
+
+  /* ── Hero ── */
+  .hero-content {
+    padding-block: var(--space-12);
+  }
+  .hero-title {
+    font-size: var(--text-3xl);
+    letter-spacing: -0.02em;
+  }
+  .hero-subtitle {
+    font-size: var(--text-base);
+  }
+  .hero-blob {
+    display: none; /* Hide blob on small phones — saves repaint */
+  }
+  .hero-stats {
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  /* ── Blog Grid: single column ── */
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── Filter bar: scroll horizontally if many buttons ── */
+  .filter-bar {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: var(--space-2);
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none;
+  }
+  .filter-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-btn {
+    flex-shrink: 0; /* Don't let buttons collapse */
+  }
+
+  /* ── Newsletter form: stack button below input ── */
+  .form-group {
+    flex-direction: column;
+  }
+
+  /* ── Buttons: full-width on hero on mobile ── */
+  .hero-actions .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── Cards: reduce padding ── */
+  .card-body {
+    padding: var(--space-4);
+  }
+  .card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+  .card-footer .btn-sm {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* ── Post page ── */
+  .post-article {
+    padding: var(--space-5);
+  }
+  .post-hero-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+  .related-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ── About page ── */
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-card {
+    padding: var(--space-6);
+  }
+
+  /* ── Footer ── */
+  .footer-links {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  /* ── Section headings ── */
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+  .section-subtitle {
+    font-size: var(--text-base);
+  }
+
+  /* ── Reduce hero stats ── */
+  .stat-number {
+    font-size: var(--text-xl);
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   LARGE SCREENS — ≥ 1400px (optional enhancement)
+   ───────────────────────────────────────────────────────────── */
+@media (min-width: 1400px) {
+  :root {
+    --container-max: 1320px;
+  }
+
+  .posts-grid {
+    grid-template-columns: repeat(3, 1fr); /* Lock to 3 cols on large screens */
+  }
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   REDUCED MOTION — Respect user's OS preference
+   Disable animations for users who've requested reduced motion
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
